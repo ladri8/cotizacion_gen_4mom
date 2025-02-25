@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Cotizaciones</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Generador de Cotizaciones</h1>
+    
+    <form method="POST">
+        <div class="form-group">
+            <label>Nombre del Cliente:</label>
+            <input type="text" name="nombre_cliente" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Nombre del Vendedor:</label>
+            <input type="text" name="nombre_vendedor" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Valor de la propiedad ($):</label>
+            <input type="number" name="valor_propiedad" step="any" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Pie ($):</label>
+            <input type="number" name="pie" step="any" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Tasa de interés mensual (%):</label>
+            <input type="number" name="tasa_mensual" step="any" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Plazo (meses):</label>
+            <input type="number" name="plazo_meses" required>
+        </div>
+        
+        <button type="submit">Generar Cotización en PDF</button>
+    </form>
+
+    {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+    {% endif %}
+</body>
+</html>
