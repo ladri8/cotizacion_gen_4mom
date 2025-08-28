@@ -94,12 +94,12 @@ def index():
             resultado = {
                 "nombre_cliente": nombre_cliente,
                 "nombre_vendedor": nombre_vendedor,
-                "valor_propiedad": valor_propiedad,
-                "pie": pie,
+                "valor_propiedad": int(valor_propiedad),
+                "pie": int(pie),
                 "plazo_meses": plazo_meses,
                 "fecha": fecha,
-                "saldo_restante": saldo_restante,
-                "cuota_mensual": cuota_mensual,
+                "saldo_restante": int(saldo_restante),
+                "cuota_mensual": int(cuota_mensual),
             }
 
             # Generar PDF
