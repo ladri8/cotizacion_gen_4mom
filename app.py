@@ -7,6 +7,11 @@ from datetime import datetime
 app = Flask(__name__)
 
 
+def fmt_clp(n: int) -> str:
+    # formatear a pesos chilenos 1234567 -> "1.234.567"
+    return f"{int(n):,}".replace(",", ".")
+
+
 def generar_pdf(datos):
     # Crear un buffer para el PDF
     buffer = BytesIO()
@@ -16,7 +21,7 @@ def generar_pdf(datos):
     pdf.setTitle("Cotización de Propiedad")
 
     # Fuente y tamaño
-    pdf.setFont("Helvetica", 12)
+    pdf.setFont("Helvetica", 14)
 
     # Título
     pdf.drawString(50, 750, "Cotización de Propiedad")
@@ -26,17 +31,17 @@ def generar_pdf(datos):
     pdf.drawString(50, 700, f"Cliente: {datos['nombre_cliente']}")
     pdf.drawString(50, 680, f"Vendedor: {datos['nombre_vendedor']}")
 
-    # Detalles de la cotización
+    # Detalles
     pdf.drawString(50, 650, "Detalles de la Cotización:")
     pdf.drawString(
-        50, 630, f"• Valor de la propiedad: ${datos['valor_propiedad']:,.2f}"
+        50, 630, f"• Valor de la propiedad: ${fmt_clp(datos['valor_propiedad'])}"
     )
-    pdf.drawString(50, 610, f"• Valor del pie: ${datos['pie']:,.2f}")
+    pdf.drawString(50, 610, f"• Valor del pie: ${fmt_clp(datos['pie'])}")
     pdf.drawString(50, 590, f"• Plazo: {datos['plazo_meses']} meses")
 
     # Resultados
     pdf.drawString(50, 570, "Resultados:")
-    pdf.drawString(50, 550, f"► Cuota mensual: ${datos['cuota_mensual']:,.2f}")
+    pdf.drawString(50, 550, f"► Cuota mensual: ${fmt_clp(datos['cuota_mensual'])}")
 
     # Finalizar el PDF
     pdf.showPage()
@@ -89,17 +94,17 @@ def index():
             saldo_restante = valor_propiedad - pie
             interes_total = saldo_restante * (tasa_mensual / 100) * plazo_meses
             total_pagar = saldo_restante + interes_total
-            cuota_mensual = total_pagar / plazo_meses
+            cuota_mensual = round(total_pagar / plazo_meses)
 
             resultado = {
                 "nombre_cliente": nombre_cliente,
                 "nombre_vendedor": nombre_vendedor,
-                "valor_propiedad": int(valor_propiedad),
-                "pie": int(pie),
+                "valor_propiedad": int(round(valor_propiedad)),
+                "pie": int(round(pie)),
                 "plazo_meses": plazo_meses,
                 "fecha": fecha,
-                "saldo_restante": int(saldo_restante),
-                "cuota_mensual": int(cuota_mensual),
+                "saldo_restante": int(round(saldo_restante)),
+                "cuota_mensual": int(round(cuota_mensual)),
             }
 
             # Generar PDF
